@@ -1,0 +1,150 @@
+DROP TABLE detalle_facturas;
+DROP TABLE subtotal;
+DROP TABLE productos;
+DROP TABLE cantidad_producto;
+DROP TABLE categorias;
+DROP TABLE precio_producto;
+DROP TABLE clientes_factura;
+DROP TABLE facturas;
+DROP TABLE clientes;
+
+
+
+
+
+CREATE TABLE clientes(
+    ID SERIAL PRIMARY KEY,
+    NOMBRE VARCHAR(20),
+    RUT varchar(12) NOT NULL,
+    DIRECCION VARCHAR(25) NOT NULL
+);
+
+CREATE TABLE facturas(
+    ID SERIAL PRIMARY KEY,
+    FECHA DATE NOT NULL,
+    ID_CLIENTE INT,
+    FOREIGN KEY(ID_CLIENTE) REFERENCES clientes(ID)
+    
+);
+
+CREATE TABLE clientes_factura(
+    ID_CLIENTE INT,
+    ID_FACTURAS INT,
+    FOREIGN KEY(ID_CLIENTE) REFERENCES clientes(ID),
+    FOREIGN KEY(ID_FACTURAS) REFERENCES facturas(ID)
+);
+
+CREATE TABLE precio_producto(
+    PRECIO INT PRIMARY KEY 
+);
+
+CREATE TABLE categorias(
+    ID SERIAL PRIMARY KEY,
+    NOMBRE VARCHAR(30) NOT NULL,
+    DESCRIPCION VARCHAR(30) NOT NULL
+
+);
+
+CREATE TABLE cantidad_producto(
+    CANTIDAD INT PRIMARY KEY
+);
+
+CREATE TABLE productos(
+    ID SERIAL PRIMARY KEY,
+    NOMBRE VARCHAR(20) NOT NULL,
+    DESCRIPCION VARCHAR(50) NOT NULL,
+    ID_PRECIO INT,
+    ID_CATEGORIA INT,
+    ID_CANTIDAD INT,
+    FOREIGN KEY(ID_PRECIO) REFERENCES precio_producto(PRECIO),
+    FOREIGN KEY(ID_CATEGORIA) REFERENCES categorias(ID),
+    FOREIGN KEY(ID_CANTIDAD) REFERENCES cantidad_producto(CANTIDAD)
+);
+
+CREATE TABLE subtotal(
+    ID INT PRIMARY KEY,
+    ID_PRECIO INT NOT NULL,
+    ID_CANTIDAD INT NOT NULL
+);
+
+CREATE TABLE detalle_facturas(
+    ID_FACTURAS INT,
+    ID_PRODUCTOS INT,
+    ID_SUBTOTAL INT,
+    IVA INT,
+    TOTAL INT, 
+    FOREIGN KEY(ID_FACTURAS) REFERENCES facturas(ID),
+    FOREIGN KEY(ID_PRODUCTOS) REFERENCES productos(ID),
+    FOREIGN KEY(ID_SUBTOTAL) REFERENCES subtotal(ID)
+);
+
+
+
+INSERT INTO clientes(
+    NOMBRE,
+    RUT,
+    DIRECCION
+)
+VALUES
+(('JORGE'), ('6923828-5'), ('los alerces 123')),
+(('ALICIA'), ('1233455-4'),('calbuco 555')),
+(('GONZALO'),('18954765-4'), ('robles 898')),
+(('ANDRES'),('13456677-k'), ('bilbao 838')),
+(('PATRICIO'), ('8967654-2'), ('coloma 555')
+);
+
+INSERT INTO productos(
+    NOMBRE,
+    DESCRIPCION
+)
+VALUES
+(('JUGO'), ('JUGO NATURAL')),
+(('FRUTA'), ('FRUTA DE TIPO CONSERVA')),
+(('HAMBURGUESA'),('HAMBURGUESA 3 INGREDIENTES')),
+(('PIZZA'),('FAMILIAR')),
+(('FAJITAS'), ('FAJITA DE MECHADA')),
+(('ENSALADA'), ('4 INGREDIENTES')),
+(('BEBIDA'), ('LATA')),
+(('COMPLETO'), ('COMPLETO ITALIANO')
+);
+
+INSERT INTO categorias(
+    NOMBRE,
+    DESCRIPCION
+)
+VALUES
+(('LIQUIDOS'),('JUGO DE FRUTAS')),
+(('FRUTAS'),('CONSERVA')),
+(('FAJITAS'),('MECHADA')
+);
+
+INSERT INTO facturas(
+    ID,
+    FECHA
+    
+)
+VALUES 
+(('1'),('09-09-2020')
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
